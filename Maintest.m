@@ -8,8 +8,10 @@ global fileTime
 global Z
 %% Data loading
 %% Find files matching date, lat/lon, and day/night criteria
-addpath(genpath('E:\CALIPSO Code_new\'))
-file_path = 'Z:\';
+project_root = fileparts(mfilename('fullpath'));
+cfg = project_config(project_root);
+addpath(genpath(project_root))
+file_path = cfg.hdf_root;
 year_select = 2007;%year folder
 date_lim             = [20070101000000,20221231000000];% date limit (start/end), note: if month-day-hour-min-sec omitted, defaults to 0101000000
 day_night_flag       = 'all';                         % day/night/all
@@ -21,7 +23,7 @@ lat_lim              =   [15,55] ;  % latitude limits [start, end]
 nlat = length(lat_centers);
 nlon = length(lon_centers);
 % 1. Read China boundary shapefile
-china_shp = shaperead('E:\CALIPSO Code_new\中华人民共和国\中华人民共和国.shp');
+china_shp = shaperead(cfg.china_shp);
 
 % 2. 初始化时间序列结构（用于趋势分析）- 以block为单位，月度累积
 ts_aod = create_ts_struct(lon_centers, lat_centers, lon_edges, lat_edges);       % AOD时间序列
@@ -371,3 +373,5 @@ if failed_count > 0
     end
 end
 fprintf('===========================================\n');
+
+

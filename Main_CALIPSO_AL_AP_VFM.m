@@ -5,7 +5,8 @@ pause(0)
 global SAVE_PATH IMAGE_SAVE_PATH
 subfolder = 'testfreq';  % Change this to select the output folder
 project_root = fileparts(mfilename('fullpath'));
-SAVE_PATH = fullfile(project_root, 'result', subfolder);
+cfg = project_config(project_root);
+SAVE_PATH = fullfile(cfg.result_root, subfolder);
 try
     diary('off');  % Release a previous debug log if the last run stopped early.
 catch
@@ -15,7 +16,7 @@ if exist(SAVE_PATH, 'dir')
     if ~removed_output_dir
         warning('Could not remove output folder "%s": %s', SAVE_PATH, remove_msg);
         subfolder = sprintf('%s_%s', subfolder, datestr(now, 'yyyymmdd_HHMMSS'));
-        SAVE_PATH = fullfile(project_root, 'result', subfolder);
+        SAVE_PATH = fullfile(cfg.result_root, subfolder);
     end
 end
 if ~exist(SAVE_PATH, 'dir')
@@ -40,8 +41,8 @@ global fileTime
 global Z
 %% Data loading
 %% Find files matching date, lat/lon, and day/night criteria
-addpath(genpath('F:\CALIPSO_Code_new\'))
-file_path = 'Z:\';
+addpath(genpath(project_root))
+file_path = cfg.hdf_root;
 year_start = 2007; year_end = 2008;
 year_select = year_start:year_end;  % Year folder selection; supports multiple years
 date_lim             = [20070101000000,20070102000000];% date limit (start/end), note: if month-day-hour-min-sec omitted, defaults to 0101000000
@@ -55,7 +56,7 @@ lat_lim              =   [15,55] ;  % latitude limits [start, end]
 nlat = length(lat_centers);
 nlon = length(lon_centers);
 % 1. Read China boundary shapefile
-china_shp = shaperead(fullfile(fileparts(mfilename('fullpath')), char([20013 21326 20154 27665 20849 21644 22269]), [char([20013 21326 20154 27665 20849 21644 22269]) '.shp']));
+china_shp = shaperead(cfg.china_shp);
 
 % 2. Initialize time-series structures for trend analysis (block based)
 ts_aod = create_ts_struct(lon_centers, lat_centers, lon_edges, lat_edges);       % AOD time series
@@ -521,6 +522,8 @@ catch ME
     fprintf(2, 'Final block save failed: %s\n', ME.message);
 end
 diary('off');
+
+
 
 
 
