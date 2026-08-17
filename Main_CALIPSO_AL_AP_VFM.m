@@ -73,7 +73,7 @@ last_interval = '';
 freq_debug_enabled = true;  % Enable frequency diagnostics
 fast_debug_mode = true;       % Use fast file selection, but process all selected files
 debug_stop_on_error = false;  % Keep processing so final frequency plots are still produced
-debug_frequency_plots_only = true;
+debug_frequency_plots_only = false;
 debug_frequency_plot_categories = {'Total', 'Anthropogenic'};
 skip_final_plots = debug_frequency_plots_only;  % Skip spatial frequency maps in debug mode
 skip_trend_analysis = false;    % Keep time-series trend output available in debug mode
@@ -522,6 +522,7 @@ catch ME
     fprintf(2, 'Final block save failed: %s\n', ME.message);
 end
 diary('off');
+
 
 
 
