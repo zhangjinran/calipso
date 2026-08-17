@@ -1,0 +1,21 @@
+# Runtime data and generated outputs
+6 Data/
+hdf2mat/data/
+result/
+archive/logs/
+*.hdf
+*.h4
+*.mat
+*.png
+*.jpg
+*.jpeg
+*.rar
+*.zip
+
+# MATLAB generated files
+*.asv
+*.m~
+
+# Local/editor/system files
+.DS_Store
+Thumbs.db
